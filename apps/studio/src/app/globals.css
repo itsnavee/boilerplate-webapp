@@ -1,0 +1,178 @@
+@import "tailwindcss";
+@import "./components.css";
+
+@layer base {
+  /* Light theme (default) */
+  :root {
+    --background: 0 0% 100%;
+    --foreground: 222 47% 11%;
+    --card: 0 0% 100%;
+    --card-foreground: 222 47% 11%;
+    --popover: 0 0% 100%;
+    --popover-foreground: 222 47% 11%;
+    --primary: 239 84% 67%;
+    --primary-foreground: 0 0% 100%;
+    --secondary: 210 40% 96%;
+    --secondary-foreground: 222 47% 11%;
+    --muted: 210 40% 96%;
+    --muted-foreground: 215 16% 47%;
+    --accent: 210 40% 96%;
+    --accent-foreground: 222 47% 11%;
+    --destructive: 0 84% 60%;
+    --destructive-foreground: 0 0% 100%;
+    --border: 0 0% 85%;
+    --input: 214 32% 91%;
+    --ring: 239 84% 67%;
+    --radius: 0.5rem;
+    /* Glass variables (light mode: solid fallbacks) */
+    --glass-bg: var(--card);
+    --glass-bg-hover: var(--muted);
+    --glass-border: var(--border);
+    --glass-border-bright: var(--border);
+    --glass-blur: 0px;
+    --glass-glow: transparent;
+    --glass-glow-strong: transparent;
+    --glass-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+  }
+
+  /* Dark theme — AMOLED black + glass */
+  .dark {
+    --background: 0 0% 0%;
+    --foreground: 210 40% 98%;
+    --card: 0 0% 4%;
+    --card-foreground: 210 40% 98%;
+    --popover: 0 0% 4%;
+    --popover-foreground: 210 40% 98%;
+    --primary: 239 84% 67%;
+    --primary-foreground: 0 0% 100%;
+    --secondary: 0 0% 10%;
+    --secondary-foreground: 210 40% 98%;
+    --muted: 0 0% 8%;
+    --muted-foreground: 215 20% 65%;
+    --accent: 0 0% 10%;
+    --accent-foreground: 210 40% 98%;
+    --destructive: 0 63% 45%;
+    --destructive-foreground: 210 40% 98%;
+    --border: 0 0% 22%;
+    --input: 0 0% 10%;
+    --ring: 239 84% 67%;
+    /* Glass variables (dark mode: frosted glass) */
+    --glass-bg: 0 0% 100% / 0.05;
+    --glass-bg-hover: 0 0% 100% / 0.08;
+    --glass-border: 0 0% 100% / 0.16;
+    --glass-border-bright: 0 0% 100% / 0.24;
+    --glass-blur: 0px;
+    --glass-glow: 239 84% 67% / 0.15;
+    --glass-glow-strong: 239 84% 67% / 0.25;
+    --glass-shadow: 0 8px 32px rgba(0, 0, 0, 0.5);
+  }
+}
+
+* { border-color: hsl(var(--border)); }
+body { background: hsl(var(--background)); color: hsl(var(--foreground)); font-family: var(--font-inter), var(--font-roboto), sans-serif; }
+
+/* Glass utility classes */
+@layer components {
+  .glass-card {
+    background: hsl(var(--glass-bg));
+    border: 1px solid hsl(var(--glass-border));
+    box-shadow: var(--glass-shadow);
+  }
+  .glass-panel {
+    background: hsl(var(--glass-bg));
+    border: 1px solid hsl(var(--glass-border));
+  }
+  .glass-tab { transition: all 0.2s; }
+  .glass-glow { box-shadow: 0 0 12px hsl(var(--glass-glow)); }
+}
+
+/* Dark-mode glass overrides */
+.dark .glass-tab-active {
+  background: hsl(var(--glass-bg-hover));
+  border: 1px solid hsl(var(--glass-border-bright));
+  box-shadow: 0 0 8px hsl(var(--glass-glow));
+}
+
+/* Studio layout chrome (dark-only) */
+.dark .studio-sidebar { background: hsl(0 0% 2% / 0.95); border-color: hsl(var(--glass-border)); }
+.dark .studio-top-nav { background: hsl(0 0% 2% / 0.85); border-color: hsl(var(--glass-border)); }
+.dark .studio-main { background: hsl(0 0% 0%); }
+
+/* Dark-mode form inputs */
+.dark input, .dark textarea, .dark select {
+  background: hsl(var(--glass-bg));
+  border-color: hsl(var(--glass-border));
+}
+.dark input:focus, .dark textarea:focus, .dark select:focus {
+  border-color: hsl(var(--glass-border-bright));
+  box-shadow: 0 0 0 2px hsl(var(--glass-glow));
+}
+
+/* Custom scrollbar */
+::-webkit-scrollbar { width: 8px; height: 8px; }
+::-webkit-scrollbar-track { background: hsl(var(--muted)); }
+::-webkit-scrollbar-thumb { background: hsl(var(--border)); border-radius: 4px; }
+::-webkit-scrollbar-thumb:hover { background: hsl(var(--muted-foreground)); }
+.dark ::-webkit-scrollbar-track { background: hsl(0 0% 0%); }
+.dark ::-webkit-scrollbar-thumb { background: hsl(0 0% 15%); }
+.dark ::-webkit-scrollbar-thumb:hover { background: hsl(0 0% 25%); }
+
+/* Dark-mode dropdowns/popovers */
+.dark [role="menu"], .dark [role="listbox"] {
+  background: hsl(0 0% 4%);
+  border: 1px solid hsl(var(--glass-border));
+}
+.dark [role="dialog"] > div { border-color: hsl(var(--glass-border)); }
+
+/* Animations */
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(10px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+@keyframes slideIn {
+  from { opacity: 0; transform: translateX(-10px); }
+  to { opacity: 1; transform: translateX(0); }
+}
+@keyframes spin { to { transform: rotate(360deg); } }
+.animate-fade-in { animation: fadeIn 0.3s ease-out; }
+.animate-slide-in { animation: slideIn 0.2s ease-out; }
+.stagger-children > * { animation: fadeIn 0.3s ease-out both; }
+.stagger-children > *:nth-child(1) { animation-delay: 0ms; }
+.stagger-children > *:nth-child(2) { animation-delay: 50ms; }
+.stagger-children > *:nth-child(3) { animation-delay: 100ms; }
+.stagger-children > *:nth-child(4) { animation-delay: 150ms; }
+.stagger-children > *:nth-child(5) { animation-delay: 200ms; }
+.stagger-children > *:nth-child(6) { animation-delay: 250ms; }
+
+/* Backward-compat: semantic color tokens as full colors.
+   Old pages use var(--accent), var(--success) etc. as direct color values. */
+:root {
+  --bg-primary: hsl(var(--background));
+  --bg-secondary: hsl(var(--secondary));
+  --bg-card: hsl(var(--card));
+  --bg-hover: hsl(var(--muted));
+  --text-primary: hsl(var(--foreground));
+  --text-secondary: hsl(var(--muted-foreground));
+  --text-muted: hsl(var(--muted-foreground) / 0.7);
+  --accent: #6366f1;
+  --accent-hover: #818cf8;
+  --success: #22c55e;
+  --warning: #f59e0b;
+  --info: #3b82f6;
+  --danger: #ef4444;
+}
+.dark {
+  --bg-primary: hsl(var(--background));
+  --bg-secondary: hsl(var(--secondary));
+  --bg-card: hsl(var(--card));
+  --bg-hover: hsl(var(--muted));
+  --text-primary: hsl(var(--foreground));
+  --text-secondary: hsl(var(--muted-foreground));
+  --text-muted: hsl(var(--muted-foreground) / 0.7);
+  --accent: #818cf8;
+  --accent-hover: #6366f1;
+  --success: #22c55e;
+  --warning: #f59e0b;
+  --info: #3b82f6;
+  --danger: #ef4444;
+}

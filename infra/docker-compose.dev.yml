@@ -1,0 +1,42 @@
+# Boilerplate Webapp — Local Development
+# Usage: docker compose -f infra/docker-compose.dev.yml up studio
+
+services:
+
+  studio:
+    build:
+      context: ../apps/studio
+      dockerfile: Dockerfile
+      target: dev
+    restart: unless-stopped
+    ports:
+      - "3000:3000"
+    environment:
+      - NODE_ENV=development
+      - NEXT_PUBLIC_API_URL=http://localhost:8000
+      - WATCHPACK_POLLING=true
+    volumes:
+      - ../apps/studio/src:/app/src
+      - ../apps/studio/public:/app/public
+      - ../apps/studio/next.config.ts:/app/next.config.ts
+      - ../apps/studio/tsconfig.json:/app/tsconfig.json
+      - ../apps/studio/postcss.config.mjs:/app/postcss.config.mjs
+
+  console:
+    build:
+      context: ../apps/console
+      dockerfile: Dockerfile
+      target: dev
+    restart: unless-stopped
+    ports:
+      - "3001:3001"
+    environment:
+      - NODE_ENV=development
+      - NEXT_PUBLIC_API_URL=http://localhost:8000
+      - WATCHPACK_POLLING=true
+    volumes:
+      - ../apps/console/src:/app/src
+      - ../apps/console/public:/app/public
+      - ../apps/console/next.config.ts:/app/next.config.ts
+      - ../apps/console/tsconfig.json:/app/tsconfig.json
+      - ../apps/console/postcss.config.mjs:/app/postcss.config.mjs
